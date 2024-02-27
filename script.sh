@@ -81,7 +81,7 @@ then
 		exit 0;
 	else
 		echo "use expect";
-		if [ -f $tmp_file_path ]
+		if [ -f $tmp_file_path ] && [ -z $8  ]
 		then
 			echo "souring file - ${tmp_file_path}" 
 			source $tmp_file_path
@@ -99,7 +99,7 @@ then
 		fi
 		sudo -E apt -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confdef" -qq -y install expect keychain --allow-change-held-packages;
 		eval `keychain --eval --nogui`
-		chmod +x expect-command.exp
+		#chmod +x expect-command.exp
 		./expect-command.exp $5 $6 $7 $KEYFILEPATH $PHRASE
 		exit 0;
 	fi
