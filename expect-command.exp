@@ -1,0 +1,15 @@
+#!/usr/bin/expect -f
+
+set USER [lindex $argv 0]
+set IP [lindex $argv 1]
+set PORT [lindex $argv 2]
+set PRIVATE_KEY_PATH [lindex $argv 3]
+set PHRASE [lindex $argv 4]
+
+spawn ssh -o "StrictHostKeyChecking no" $USER@$IP -p $PORT -i $PRIVATE_KEY_PATH
+
+expect "Enter passphrase for key '${PRIVATE_KEY_PATH}'"
+
+send -- "$PHRASE\r"
+
+interact
