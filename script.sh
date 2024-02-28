@@ -1,13 +1,20 @@
 #!/usr/bin/bash
 
+# ENV for the Script 
 export DEBIAN_FRONTEND=noninteractive
  export HISTCONTROL=ignoredups:ignorespace
 
+# - color
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 PURPLE='\033[0;35m'
 NC='\033[0m' # No Color
 
+# - port
+MIN_PORT=30000
+MAX_PORT=62000
+
+# - temp file for scripts subsequent usage
 tmp_file_path=/tmp/.script #$HOME/.script
 
 while getopts ":a:t:m:" opt; do
@@ -122,6 +129,11 @@ if [ "$t_out" == "remote" ]; then
 	if [ -z $PASSWORD ]; then
 		 PASSWORD=$(tr </dev/urandom -dc A-Za-z0-9*%^+~ | head -c6)$(tr </dev/urandom -dc 0-9 | head -c1)$(tr </dev/urandom -dc *%^+~ | head -c1)
 	fi
+
+	if [ ! -z $RANDOMPORT ]; then
+		PORT=$(($RANDOM%($MAX_PORT-$MIN_PORT+1)+$MIN_PORT))
+	fi
+
 	if [ -z $PORT ]; then
 		if [ ! -z $3 ]; then
 			number=$3
