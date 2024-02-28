@@ -77,7 +77,7 @@ then
 	fi
 	if [ "$WITHPASS" == 1 ]; then
 		sudo -E apt -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confdef" -qq -y install sshpass --allow-change-held-packages;
-		sshpass -e ssh -o "StrictHostKeyChecking no" $5@$6 -p $7;
+		sshpass -e ssh -o "StrictHostKeyChecking no" -o PreferredAuthentications=password -o PubkeyAuthentication=no $5@$6 -p $7;
 		exit 0;
 	else
 		echo "use expect";
