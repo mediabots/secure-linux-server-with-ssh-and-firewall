@@ -48,7 +48,7 @@ printf "type is %s\n" "$t_out"
 if [ "$t_out" == "host" ] && [ "$m_out" == "generate" ];
 then
 	echo "generating ssh key pair for you";
-	while :; do filename=id_$(openssl rand -hex 1); if [[ ! -f $HOME/.ssh/$filename ]] ; then break; fi; done
+	while :; do filename=id_ed25519_$(openssl rand -hex 1); if [[ ! -f $HOME/.ssh/$filename ]] ; then break; fi; done
 	 export PHRASE=$(tr </dev/urandom -dc A-Za-z0-9*%^+~ | head -c6)$(tr </dev/urandom -dc 0-9 | head -c1)$(tr </dev/urandom -dc *%^+~ | head -c1)	
 	rm -rf $tmp_file_path
 	echo export PHRASE="${PHRASE}" > $tmp_file_path
@@ -64,6 +64,8 @@ then
 	echo "above is the public key of your SSH key pair. You can share it with your Hosting/Cloud provider"
 	exit 0;
 fi
+
+sudo apt update
 
 if [ "$t_out" == "host" ] && [ "$m_out" == "login" ];
 then
@@ -200,7 +202,7 @@ if [ "$t_out" == "remote" ]; then
 	sudo systemctl disable --now ufw
 	sleep 3
 	sudo apt remove --yes --purge ufw
-	sudo apt update && sudo -E apt -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confdef" -qq -y install firewalld --allow-change-held-packages
+	sudo -E apt -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confdef" -qq -y install firewalld --allow-change-held-packages
 
 	# confirm Firewall state
 	sudo firewall-cmd --state
