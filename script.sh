@@ -49,10 +49,11 @@ then
 	##source $tmp_file_path
 	##rm -rf $tmp_file_path
 	ssh-keygen -t ed25519 -C $filename -f $HOME/.ssh/$filename -P "${PHRASE}"
-	echo "========================================================"
-	echo "your passphrase for file - "$filename "is: "$PHRASE
-	echo "${GREEN}IMPORTANT: please note it down in your non-digital notebook. ${NC}This value is non-recoverable"
-	cat $HOME/.ssh/$filename.pub
+	echo "=================================================================="
+	echo -e "${GREEN}[IMPORTANT]${NC}"
+	echo -e "your passphrase for file - ${PURPLE}${filename}${NC} is: ${PURPLE}${PHRASE}${NC}"
+	echo "please note it down in your non-digital notebook. This value is non-recoverable"
+	printf "${PURPLE}$(cat $HOME/.ssh/$filename.pub)${NC}\n"
 	echo "above is the public key of your SSH key pair. You can share it with your Hosting/Cloud provider"
 	exit 0;
 fi
@@ -154,13 +155,13 @@ if [ "$t_out" == "remote" ]; then
 
 	# pre-check SSH Auth requirements
 	if [ ! -f $USERDIR/.ssh/authorized_keys ]; then
-		echo "Erro: looks like this remote machine has not setup for SSH authentication"
-		echo "=> to know how to setup SSH authentication, please refer to our Script documentation"
+		echo -e "${RED}Error:${NC} looks like this remote machine has not setup for SSH authentication"
+		echo -e "${PURPLE}=>${NC} to know how to setup SSH authentication, please refer to our Script documentation"
 		exit 1;
 	fi
 	if [ $(cat $USERDIR/.ssh/authorized_keys | wc -l) -eq 0 ]; then 
-		echo "Erro: no public key has been added to this remote machine to allow SSH authentication from out_side/other_side"
-		echo "=> to know how to add a public key, please refer to our Script documentation"
+		echo -e "${RED}Error:${NC} no public key has been added to this remote machine to allow SSH authentication from out_side/other_side"
+		echo -e "${PURPLE}=>${NC} to know how to add a public key, please refer to our Script documentation"
 		exit 1;
 	fi
 
@@ -213,7 +214,7 @@ if [ "$t_out" == "remote" ]; then
 	sudo firewall-cmd --get-active-zones
 
 	# print info
-	echo "========================================================"
+	echo "=================================================================="
 	echo -e "${GREEN}[IMPORTANT]${NC} ${PURPLE}username:${NC} $USERID ${PURPLE}password:${NC} $PASSWORD ${PURPLE}port:${NC} $PORT \nplease note them down in your notebook. These values are non-recoverable"
 	exit 0;
 
