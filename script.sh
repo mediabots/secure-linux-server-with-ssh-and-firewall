@@ -48,14 +48,15 @@ printf "type is %s\n" "$t_out"
 if [ "$t_out" == "host" ] && [ "$m_out" == "generate" ];
 then
 	echo "generating ssh key pair for you";
-	while :; do filename=id_ed25519_$(openssl rand -hex 1); if [[ ! -f $HOME/.ssh/$filename ]] ; then break; fi; done
+	while :; do comment=$(openssl rand -hex 1); if [[ ! -f $HOME/.ssh/id_ed25519_$comment ]] ; then break; fi; done
 	 export PHRASE=$(tr </dev/urandom -dc A-Za-z0-9*%^+~ | head -c6)$(tr </dev/urandom -dc 0-9 | head -c1)$(tr </dev/urandom -dc *%^+~ | head -c1)	
-	rm -rf $tmp_file_path
+	sudo rm -rf $tmp_file_path
+	filename=id_ed25519_$comment
 	echo export PHRASE="${PHRASE}" > $tmp_file_path
 	echo export KEYFILEPATH=$HOME/.ssh/$filename >> $tmp_file_path
 	##source $tmp_file_path
 	##rm -rf $tmp_file_path
-	ssh-keygen -t ed25519 -C $filename -f $HOME/.ssh/$filename -P "${PHRASE}"
+	ssh-keygen -t ed25519 -C $comment -f $HOME/.ssh/$filename -P "${PHRASE}"
 	echo "=================================================================="
 	echo -e "${GREEN}[IMPORTANT]${NC}"
 	echo -e "your passphrase for file - ${PURPLE}${filename}${NC} is: ${PURPLE}${PHRASE}${NC}"
