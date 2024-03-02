@@ -174,7 +174,7 @@ if [ "$t_out" == "remote" ]; then
 		echo -e "${PURPLE}=>${NC} to know how to setup SSH authentication, please refer to our Script documentation"
 		exit 1;
 	fi
-	if [ $(cat $USERDIR/.ssh/authorized_keys | wc -l) -eq 0 ]; then 
+	if [ $(cat $USERDIR/.ssh/authorized_keys | wc -w) -eq 0 ]; then 
 		echo -e "${RED}Error:${NC} no public key has been added to this remote machine to allow SSH authentication from out_side/other_side"
 		echo -e "${PURPLE}=>${NC} to know how to add a public key, please refer to our Script documentation"
 		exit 1;
