@@ -141,7 +141,7 @@ if [ "$t_out" == "remote" ]; then
 		if [ ! -z $3 ]; then
 			number=$3
 			if [ -z "${number//[0-9]}" ]; then
-				if [ -n "$number" ]; then
+				if [ -n "$number" ] && [ $number -ge $MIN_PORT ] && [ $number -le $MAX_PORT ]; then
 					PORT=$number
 				fi
 			else
@@ -203,6 +203,7 @@ if [ "$t_out" == "remote" ]; then
 	sudo systemctl disable --now ufw
 	sleep 3
 	sudo apt remove --yes --purge ufw
+	sudo apt autoremove --yes
 	sudo -E apt -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confdef" -qq -y install firewalld --allow-change-held-packages
 
 	# confirm Firewall state
