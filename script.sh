@@ -49,7 +49,7 @@ if [ "$t_out" == "host" ] && [ "$m_out" == "generate" ];
 then
 	echo "generating ssh key pair for you";
 	while :; do comment=$(openssl rand -hex 1); if [[ ! -f $HOME/.ssh/id_ed25519_$comment ]] ; then break; fi; done
-	 export PHRASE=$(tr </dev/urandom -dc A-Za-z0-9*%^+~ | head -c6)$(tr </dev/urandom -dc 0-9 | head -c1)$(tr </dev/urandom -dc *%^+~ | head -c1)	
+	 export PHRASE=$(tr </dev/urandom -dc A-Za-z0-9*%+^ | head -c6)$(tr </dev/urandom -dc 0-9 | head -c1)$(tr </dev/urandom -dc *%+^ | head -c1)	
 	sudo rm -rf $tmp_file_path
 	filename=id_ed25519_$comment
 	echo export PHRASE="${PHRASE}" > $tmp_file_path
@@ -130,7 +130,7 @@ if [ "$t_out" == "remote" ]; then
 		USERID='ubuntu'
 	fi
 	if [ -z $PASSWORD ]; then
-		 PASSWORD=$(tr </dev/urandom -dc A-Za-z0-9*%^+~ | head -c6)$(tr </dev/urandom -dc 0-9 | head -c1)$(tr </dev/urandom -dc *%^+~ | head -c1)
+		 PASSWORD=$(tr </dev/urandom -dc A-Za-z0-9*%+^ | head -c6)$(tr </dev/urandom -dc 0-9 | head -c1)$(tr </dev/urandom -dc *%+^ | head -c1)
 	fi
 
 	if [ ! -z $RANDOMPORT ]; then
